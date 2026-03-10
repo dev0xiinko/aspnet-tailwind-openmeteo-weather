@@ -1,0 +1,13 @@
+bin/
+obj/
+node_modules/
+out/
+
+*.user
+*.swp
+*.tmp
+.DS_Store
+
+.vs/
+.vscode/
+

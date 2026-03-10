@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global layout tweaks for the Tailwind weather UI */
+html,
+body {
+    margin: 0;
+    padding: 0;
+}

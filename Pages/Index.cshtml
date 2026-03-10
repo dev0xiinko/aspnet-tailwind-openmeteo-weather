@@ -1,0 +1,200 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Weather App";
+}
+
+<div class="min-h-[calc(100vh-6rem)] bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-100 flex items-center justify-center">
+    <div class="w-full max-w-6xl px-4 py-8 md:px-8 md:py-12">
+        <div class="flex flex-col gap-8 md:flex-row md:items-center md:justify-between mb-10">
+            <div class="space-y-4">
+                <span class="inline-flex items-center gap-2 rounded-full bg-sky-500/10 border border-sky-500/30 px-3 py-1 text-[11px] font-medium text-sky-200 backdrop-blur">
+                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+                    Live global forecast
+                </span>
+                <div>
+                    <h1 class="text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight">
+                        A modern
+                        <span class="bg-gradient-to-r from-sky-400 via-cyan-300 to-indigo-400 bg-clip-text text-transparent">
+                            weather
+                        </span>
+                        dashboard
+                    </h1>
+                    <p class="mt-3 text-sm md:text-base text-slate-300 max-w-xl">
+                        Search any city to see clean, real‑time conditions powered by
+                        <a href="https://open-meteo.com/en/docs" class="text-sky-300 hover:text-sky-200 underline-offset-2 hover:underline">Open‑Meteo</a>.
+                        Designed for quick checks and daily overview.
+                    </p>
+                </div>
+            </div>
+            <div class="w-full md:w-[320px]">
+                <div class="relative">
+                    <div class="absolute -inset-0.5 bg-gradient-to-br from-sky-500/40 via-cyan-400/20 to-violet-500/40 rounded-3xl blur opacity-70"></div>
+                    <div class="relative bg-slate-950/80 border border-slate-800/80 rounded-3xl p-5 shadow-2xl shadow-sky-950/70 backdrop-blur-xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="space-y-0.5">
+                                <p class="text-[11px] uppercase tracking-[0.24em] text-slate-400">Now</p>
+                                <p class="text-xs text-slate-500">
+                                    Updated just now
+                                </p>
+                            </div>
+                            <span class="inline-flex items-center gap-1 rounded-full bg-emerald-400/10 border border-emerald-400/60 px-3 py-1 text-[11px] font-medium text-emerald-200">
+                                <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                Live
+                            </span>
+                        </div>
+                        <div class="flex items-center justify-between gap-4">
+                            <div>
+                                <p class="text-[11px] text-slate-400 mb-1 line-clamp-1">
+                                    @(Model.CurrentWeather?.City ?? "San Francisco, CA")
+                                </p>
+                                <p class="text-4xl md:text-5xl font-semibold leading-none tracking-tight">
+                                    @((Model.CurrentWeather?.Temperature ?? 22).ToString("0"))°
+                                </p>
+                                <p class="mt-2 text-[11px] text-slate-300">
+                                    @((Model.CurrentWeather?.Description ?? "Partly cloudy").ToUpperInvariant())
+                                    • feels @((Model.CurrentWeather?.FeelsLike ?? 21).ToString("0"))°
+                                </p>
+                            </div>
+                            <div class="relative">
+                                <div class="h-20 w-20 rounded-full bg-gradient-to-br from-sky-400 via-sky-300 to-amber-200 flex items-center justify-center shadow-xl shadow-sky-500/60 ring-4 ring-sky-400/30">
+                                    <span class="text-3xl">⛅</span>
+                                </div>
+                                <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 text-[10px] text-slate-900/80 font-medium px-2 py-0.5 rounded-full bg-slate-50/70 backdrop-blur">
+                                    Current
+                                </div>
+                            </div>
+                        </div>
+                        <dl class="mt-5 grid grid-cols-3 gap-3 text-[11px] text-slate-300">
+                            <div class="rounded-2xl bg-slate-900/80 border border-slate-800 px-2.5 py-2.5">
+                                <dt class="text-[10px] uppercase tracking-wide text-slate-500">Wind</dt>
+                                <dd class="mt-1.5 font-semibold text-slate-50">
+                                    @((Model.CurrentWeather?.WindSpeed ?? 3.5).ToString("0.0")) m/s
+                                </dd>
+                            </div>
+                            <div class="rounded-2xl bg-slate-900/80 border border-slate-800 px-2.5 py-2.5">
+                                <dt class="text-[10px] uppercase tracking-wide text-slate-500">Humidity</dt>
+                                <dd class="mt-1.5 font-semibold text-slate-50">
+                                    @((Model.CurrentWeather?.Humidity ?? 62))%
+                                </dd>
+                            </div>
+                            <div class="rounded-2xl bg-slate-900/80 border border-slate-800 px-2.5 py-2.5">
+                                <dt class="text-[10px] uppercase tracking-wide text-slate-500">UV index</dt>
+                                <dd class="mt-1.5 font-semibold text-slate-50">3 / 10</dd>
+                            </div>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid gap-8 lg:grid-cols-[minmax(0,2.1fr),minmax(0,1.1fr)] items-start">
+            <section aria-labelledby="city-search" class="space-y-6">
+                <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 md:p-6 shadow-lg shadow-slate-950/40">
+                    <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+                        <form method="get" class="w-full md:max-w-lg">
+                            <label for="city" class="block text-xs font-medium uppercase tracking-[0.18em] text-slate-400 mb-2">
+                                Search city
+                            </label>
+                            <div class="flex gap-2">
+                                <div class="relative flex-1">
+                                    <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 text-sm">🔍</span>
+                                    <input
+                                        id="city"
+                                        name="city"
+                                        type="text"
+                                        value="@Model.City"
+                                        placeholder="Try &quot;London&quot; or &quot;Tokyo&quot;..."
+                                        class="block w-full rounded-xl border border-slate-700 bg-slate-950/60 py-2.5 pl-9 pr-3 text-sm text-slate-100 placeholder:text-slate-500 shadow-inner shadow-black/40 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/60"
+                                    />
+                                </div>
+                                <button
+                                    type="submit"
+                                    class="inline-flex items-center justify-center rounded-xl bg-sky-500 px-4 py-2.5 text-sm font-medium text-slate-950 shadow-md shadow-sky-500/40 transition hover:bg-sky-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400/70"
+                                >
+                                    Get weather
+                                </button>
+                            </div>
+                            <p class="mt-2 text-xs text-slate-400">
+                                Search any city worldwide using live Open‑Meteo data.
+                            </p>
+                        </form>
+                        <div class="flex gap-3 text-xs text-slate-400">
+                            <button type="button" class="inline-flex items-center gap-1.5 rounded-full border border-slate-700/80 bg-slate-900/60 px-3 py-1.5 hover:border-sky-500/60 hover:text-sky-200">
+                                <span class="text-base">📍</span>
+                                Use my location
+                            </button>
+                            <button type="button" class="inline-flex items-center gap-1.5 rounded-full border border-slate-700/80 bg-slate-900/60 px-3 py-1.5 hover:border-emerald-500/60 hover:text-emerald-200">
+                                <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+                                Real‑time updates
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 md:p-6 shadow-lg shadow-slate-950/40">
+                    <header class="flex items-center justify-between mb-4">
+                        <div>
+                            <h2 class="text-sm font-semibold tracking-tight text-slate-50">Today at a glance</h2>
+                            <p class="mt-1 text-xs text-slate-400">Hourly temperature trend for the next 12 hours.</p>
+                        </div>
+                        <span class="rounded-full bg-slate-900 border border-slate-700 px-3 py-1 text-[11px] text-slate-300">
+                            Mock data
+                        </span>
+                    </header>
+
+                    <div class="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-3 text-xs">
+                        @for (var i = 0; i < 8; i++)
+                        {
+                            <div class="flex flex-col items-center gap-2 rounded-xl bg-slate-950/60 border border-slate-800/80 px-2.5 py-3">
+                                <span class="text-[11px] text-slate-400">
+                                    @(DateTime.Now.AddHours(i).ToString("htt").ToLower())
+                                </span>
+                                <span class="text-base font-semibold text-slate-50">
+                                    @(68 + i)°
+                                </span>
+                                <span class="h-8 w-10 rounded-full bg-slate-800/80 flex items-center justify-center text-sm">
+                                    🌤
+                                </span>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </section>
+
+            <aside class="space-y-6">
+                <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 md:p-6 shadow-lg shadow-slate-950/40">
+                    <header class="flex items-center justify-between mb-4">
+                        <h2 class="text-sm font-semibold tracking-tight text-slate-50">5‑day outlook</h2>
+                        <span class="text-[11px] text-slate-400">Sample preview</span>
+                    </header>
+
+                    <ul class="space-y-2.5 text-sm">
+                        @{
+                            string[] days = new[] { "Today", "Tue", "Wed", "Thu", "Fri" };
+                            string[] icons = new[] { "⛅", "🌧", "🌦", "☀️", "⛈" };
+                        }
+                        @for (var i = 0; i < days.Length; i++)
+                        {
+                            <li class="flex items-center justify-between rounded-xl bg-slate-950/60 border border-slate-800/80 px-3.5 py-2.5">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-lg">@icons[i]</span>
+                                    <div>
+                                        <p class="text-xs font-medium text-slate-100">@days[i]</p>
+                                        <p class="text-[11px] text-slate-400">
+                                            @(i == 0 ? "Partly cloudy turning clear overnight" : "Light breeze • low chance of rain")
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3 text-xs text-slate-200">
+                                    <span class="font-semibold">@((74 - i * 2))°</span>
+                                    <span class="text-slate-400">@((62 - i))°</span>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </div>
+</div>

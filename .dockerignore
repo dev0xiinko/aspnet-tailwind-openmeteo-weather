@@ -1,0 +1,12 @@
+bin
+obj
+node_modules
+**/*.user
+**/*.swp
+**/*.tmp
+.DS_Store
+.git
+.gitignore
+Dockerfile*
+docker-compose*
+
