@@ -635,6 +635,14 @@ video {
   margin-top: 1.25rem;
 }
 
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+
+.mt-\[2px\] {
+  margin-top: 2px;
+}
+
 .line-clamp-1 {
   overflow: hidden;
   display: -webkit-box;
@@ -877,6 +885,10 @@ video {
   border-color: rgb(14 165 233 / 0.3);
 }
 
+.border-amber-500\/40 {
+  border-color: rgb(245 158 11 / 0.4);
+}
+
 .bg-emerald-400 {
   --tw-bg-opacity: 1;
   background-color: rgb(52 211 153 / var(--tw-bg-opacity, 1));
@@ -936,6 +948,10 @@ video {
 
 .bg-slate-950\/80 {
   background-color: rgb(2 6 23 / 0.8);
+}
+
+.bg-amber-500\/10 {
+  background-color: rgb(245 158 11 / 0.1);
 }
 
 .bg-gradient-to-br {
@@ -1244,6 +1260,15 @@ video {
 
 .text-transparent {
   color: transparent;
+}
+
+.text-amber-100 {
+  --tw-text-opacity: 1;
+  color: rgb(254 243 199 / var(--tw-text-opacity, 1));
+}
+
+.text-amber-100\/80 {
+  color: rgb(254 243 199 / 0.8);
 }
 
 .underline-offset-2 {

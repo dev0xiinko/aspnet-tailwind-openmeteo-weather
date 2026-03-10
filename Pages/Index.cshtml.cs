@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.Http;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,7 @@ public class IndexModel : PageModel
     public string? City { get; set; }
 
     public CurrentWeatherViewModel? CurrentWeather { get; private set; }
+    public bool IsRateLimited { get; private set; }
 
     public IndexModel(
         ILogger<IndexModel> logger,
@@ -38,7 +40,16 @@ public class IndexModel : PageModel
 
             if (!geoResponse.IsSuccessStatusCode)
             {
-                _logger.LogWarning("Open-Meteo geocoding API returned non-success status {StatusCode}", geoResponse.StatusCode);
+                if (geoResponse.StatusCode == (HttpStatusCode)429)
+                {
+                    IsRateLimited = true;
+                    _logger.LogWarning("Open-Meteo geocoding API rate limited (429) for city {City}", City);
+                }
+                else
+                {
+                    _logger.LogWarning("Open-Meteo geocoding API returned non-success status {StatusCode}", geoResponse.StatusCode);
+                }
+
                 CurrentWeather = GetMockWeather(City);
                 return;
             }
@@ -72,7 +83,16 @@ public class IndexModel : PageModel
             var weatherResponse = await weatherClient.GetAsync(weatherUrl);
             if (!weatherResponse.IsSuccessStatusCode)
             {
-                _logger.LogWarning("Open-Meteo weather API returned non-success status {StatusCode}", weatherResponse.StatusCode);
+                if (weatherResponse.StatusCode == (HttpStatusCode)429)
+                {
+                    IsRateLimited = true;
+                    _logger.LogWarning("Open-Meteo weather API rate limited (429) for city {City}", City);
+                }
+                else
+                {
+                    _logger.LogWarning("Open-Meteo weather API returned non-success status {StatusCode}", weatherResponse.StatusCode);
+                }
+
                 CurrentWeather = GetMockWeather(City);
                 return;
             }
